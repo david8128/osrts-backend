@@ -14,7 +14,7 @@ const computeSpeed = context => {
         var checkpoint = checkpoints.data[i];
         if (newResult.times[checkpoint.num]) {
           var hours = newResult.times[checkpoint.num].duration;
-          var speed = parseFloat((checkpoint.distance / hours)).toFixed(2);
+          var speed = parseFloat((checkpoint.distance / hours) / 1000).toFixed(2);
           console.log("minutes: ",hours);
           console.log("distance: ",checkpoint.distance);
           console.log("speed: ",speed);
