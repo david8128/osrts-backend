@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+
+  # backend:
+  #   image: daafonsecato/osrts-backend:0.1
+  #   ports:
+  #     - "3030:3030"
+  #   depends_on:
+  #     mongodb:
+  #       condition: service_healthy
+  #   links: 
+  #       - mongodb
+
+  mongodb:
+    image: mongo:latest
+    container_name: 'osrts-mongodb'
+    environment:
+      - MONGO_INITDB_DATABASE=openSourceRaceTimingSystem
+      - MONGO_INITDB_ROOT_USER=iicnvte
+      - MONGO_INITD8_ROOT_PASSWORD="iicnvt2022!"
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:27017"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 5
+    
+volumes:
+  mongodata:
