@@ -10,8 +10,8 @@ const Q = require('q');
 const auth = require('@feathersjs/authentication');
 
 const moment = require('moment');
-require('moment/locale/fr');
-moment.locale('fr');
+require('moment/locale/es');
+moment.locale('es');
 
 const PRO_WAVE_NAME = 'compet';
 

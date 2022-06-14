@@ -4,13 +4,14 @@
 */
 
 var moment = require('moment');
-var momentfr = require('moment/locale/fr');
-moment.locale('fr');
+var momentes = require('moment/locale/es');
+moment.locale('es');
 
 const setPlaceRanking = context => {
   return new Promise((resolve, reject) => {
     // Variables
     const resultsService = context.app.service('/results');
+    console.log(context.data);
     var newResult = context.data;
     if(newResult.times['99']){
       var momentTime = moment(newResult.times['99'].time);

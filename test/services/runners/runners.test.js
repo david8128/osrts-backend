@@ -251,7 +251,7 @@ describe('runners service', () => {
       describe('on hook checkAndUpdateTag', () => {
         const Tags = app.service('tags');
 
-        const defaultTagsRange = { from: 1, to: 10, color: 'bleu' };
+        const defaultTagsRange = { from: 1, to: 10, itr: 'bleu' };
 
         before(function (done) {
           Tags.remove(null).then(() => {
@@ -268,7 +268,7 @@ describe('runners service', () => {
           chai.request(URL).patch('/runners/' + runners[0]._id)
             .set('Accept', 'application/json')
             .set('Authorization', 'Bearer '.concat(token))
-            .send({ tag: { num: 1, color: 'bleu' } })
+            .send({ tag: { num: 1, itr: 'bleu' } })
             //when finished
             .end((err, res) => {
               if (err)
@@ -284,7 +284,7 @@ describe('runners service', () => {
           chai.request(URL).patch('/runners/' + runners[1]._id)
             .set('Accept', 'application/json')
             .set('Authorization', 'Bearer '.concat(token))
-            .send({ tag: { num: 1, color: 'bleu' } })
+            .send({ tag: { num: 1, itr: 'bleu' } })
             //when finished
             .end((err, res) => {
               expect(err).to.exist;
@@ -297,7 +297,7 @@ describe('runners service', () => {
           chai.request(URL).patch('/runners/' + runners[0]._id)
             .set('Accept', 'application/json')
             .set('Authorization', 'Bearer '.concat(token))
-            .send({ tag: { num: 1, color: 'bleu' } })
+            .send({ tag: { num: 1, itr: 'bleu' } })
             //when finished
             .end((err, res) => {
               if (err)
@@ -305,8 +305,8 @@ describe('runners service', () => {
               expect(err).to.not.exist;
               expect(res.body).to.exist;
               expect(res.body.tag.num).to.equal(1);
-              expect(res.body.tag.color).to.equal('bleu');
-              Tags.find({ query: { num: 1, color: 'bleu' } }).then(data => {
+              expect(res.body.tag.itr).to.equal('bleu');
+              Tags.find({ query: { num: 1, itr: 'bleu' } }).then(data => {
                 expect(data.data[0]).to.exist;
                 expect(data.data[0].assigned).to.be.true;
                 done();
@@ -322,7 +322,7 @@ describe('runners service', () => {
           chai.request(URL).patch('/runners/' + runners[0]._id)
             .set('Accept', 'application/json')
             .set('Authorization', 'Bearer '.concat(token))
-            .send({ tag: { num: 2, color: 'bleu' } })
+            .send({ tag: { num: 2, itr: 'bleu' } })
             //when finished
             .end((err, res) => {
               if (err)
@@ -330,11 +330,11 @@ describe('runners service', () => {
               expect(err).to.not.exist;
               expect(res.body).to.exist;
               expect(res.body.tag.num).to.equal(2);
-              expect(res.body.tag.color).to.equal('bleu');
-              Tags.find({ query: { num: 1, color: 'bleu' } }).then(data => {
+              expect(res.body.tag.itr).to.equal('bleu');
+              Tags.find({ query: { num: 1, itr: 'bleu' } }).then(data => {
                 expect(data.data[0]).to.exist;
                 expect(data.data[0].assigned).to.be.false;
-                return Tags.find({ query: { num: 2, color: 'bleu' } });
+                return Tags.find({ query: { num: 2, itr: 'bleu' } });
               }).then(data => {
                 expect(data.data[0]).to.exist;
                 expect(data.data[0].assigned).to.be.true;

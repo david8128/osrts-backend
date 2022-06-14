@@ -17,7 +17,7 @@ chai.use(chaiHttp);
 var token;
 const URL = 'http://' + app.settings.host + ':' + app.settings.port;
 
-const defaultTagsRange = { from: 1, to: 10, color: 'bleu' };
+const defaultTagsRange = { from: 1, to: 10, itr: 'bleu' };
 
 describe('tags service', () => {
 

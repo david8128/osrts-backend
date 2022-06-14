@@ -6,8 +6,8 @@
 const Q = require('q');
 
 const moment = require('moment');
-require('moment/locale/fr');
-moment.locale('fr');
+require('moment/locale/es');
+moment.locale('es');
 
 // Hook that updates the dependencies when deleting a runners
 // Remove one from the count of persons for its wave and its day
@@ -21,7 +21,7 @@ const updateDependencies = context => {
     var arrayPromises = [];
     // Update the tag
     if(oldRunner['tag.num']){
-      var promiseTag = tagsService.patch(null, {assigned: false}, {query: {num: oldRunner.tag.num, color: oldRunner.tag.color}});
+      var promiseTag = tagsService.patch(null, {assigned: false}, {query: {num: oldRunner.tag.num, itr: oldRunner.tag.itr}});
       arrayPromises.push(promiseTag);
     }
     // Update the wave

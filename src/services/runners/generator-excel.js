@@ -13,8 +13,8 @@ var ejs = require('ejs');
 var phantom = require('phantom');
 const path = require('path');
 const moment = require('moment');
-require('moment/locale/fr');
-moment.locale('fr');
+require('moment/locale/es');
+moment.locale('es');
 
 const PRO_WAVE_NAME = 'compet';
 
@@ -91,7 +91,7 @@ module.exports = function () {
     data.push(['Vague', 'Type', 'Team', 'Nom', 'Tag']);
     _.each(mapWaves, (mapRunners, waveId) => {
       _.each(mapRunners, (runner, runnerId) => {
-        const tagString = runner.tag ? `${runner.tag.color} - ${runner.tag.num}` : '';
+        const tagString = runner.tag ? `${runner.tag.itr} - ${runner.tag.num}` : '';
         data.push([runner.wave_id, runner.type, runner.team_name, runner.name, tagString]);
       });
     });

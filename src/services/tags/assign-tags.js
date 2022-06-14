@@ -9,8 +9,8 @@ const Q = require('q');
 const auth = require('@feathersjs/authentication');
 
 const moment = require('moment');
-require('moment/locale/fr');
-moment.locale('fr');
+require('moment/locale/es');
+moment.locale('es');
 
 module.exports = function () {
   const app = this;
@@ -33,7 +33,7 @@ module.exports = function () {
       var promisesArray = [];
       //var promiseRace = raceService.find({});
       //promisesArray.push(promiseRace);
-      var promiseTags = tagsModel.find({}).sort({ color: 1, num: 1 });
+      var promiseTags = tagsModel.find({}).sort({ itr: 1, num: 1 });
       promisesArray.push(promiseTags);
       var deferred = Q.defer();
       promisesArray.push(deferred.promise);
@@ -62,22 +62,22 @@ module.exports = function () {
       Q.allSettled(promisesArray).then((results) => {
         var indexTags = 0;
         var indexRunners = 0;
-        var currentColor = tags[0].color;
+        var currentColor = tags[0].itr;
         var currentDate = runners[0].date;
         var onePassDone = false;
         while (indexTags < tags.length && indexRunners < runners.length) {
           var tag = tags[indexTags];
           var runner = runners[indexRunners];
-          if ((tag.color === currentColor && runner.date !== currentDate && !onePassDone) || (tag.assigned && onePassDone)) {
+          if ((tag.itr === currentColor && runner.date !== currentDate && !onePassDone) || (tag.assigned && onePassDone)) {
             indexTags++;
             continue;
-          } else if (tag.color !== currentColor && runner.date !== currentDate) {
-            currentColor = tag.color;
+          } else if (tag.itr !== currentColor && runner.date !== currentDate) {
+            currentColor = tag.itr;
             currentDate = runner.date;
           }
           tag.assigned = true;
           tagsService.update(tag._id, tag).then(data => { }).catch(error => { console.log(error); });
-          runner.tag = { num: tag.num, color: tag.color };
+          runner.tag = { num: tag.num, itr: tag.itr };
           runnersService.update(runner._id, runner).then(data => { }).catch(error => { console.log(error); });
           indexTags++;
           indexRunners++;

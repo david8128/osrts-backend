@@ -270,12 +270,12 @@ describe('race service', () => {
         const Tags = app.service('tags');
 
         const correctWave = { num: 1, type: "compet", date: "15-04-2017", start_time: new Date() };
-        const correctTime = { checkpoint_id: 99, tag: { num: 1, color: "bleu" }, timestamp: new Date() };
+        const correctTime = { checkpoint_id: 99, tag: { num: 1, itr: "bleu" }, timestamp: new Date() };
         const correctRunner = {
-          name: "Runner1", team_id: 999, team_name: "Team 1", tag: { num: 1, color: "bleu" },
+          name: "Runner1", team_id: 999, team_name: "Team 1", tag: { num: 1, itr: "bleu" },
           type: "compet", wave_id: 1, date: "15-04-2017", gender: "M"
         };
-        const correctTagsRange = { from: 1, to: 10, color: "bleu" };
+        const correctTagsRange = { from: 1, to: 10, itr: "bleu" };
 
         before(function (done) {
           Waves.create(correctWave).then(() => {

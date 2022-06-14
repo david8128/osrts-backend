@@ -47,7 +47,7 @@ module.exports = function () {
           checkpoint_id: data[0],
           tag: {
             num: data[1],
-            color: data[2]
+            itr: data[2]
           },
           timestamp: data[3]
         };

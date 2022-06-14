@@ -18,8 +18,8 @@ chai.use(chaiHttp);
 var token;
 const URL = 'http://' + app.settings.host + ':' + app.settings.port;
 
-const defaultTime = { checkpoint_id: 1, tag: { num: 1, color: 'bleu' }, timestamp: new Date() };
-const defaultTagsRange = { from: 1, to: 10, color: 'bleu' };
+const defaultTime = { checkpoint_id: 1, tag: { num: 1, itr: 'bleu' }, timestamp: new Date() };
+const defaultTagsRange = { from: 1, to: 10, itr: 'bleu' };
 
 
 describe('times service', () => {
@@ -223,7 +223,7 @@ describe('times service', () => {
         chai.request(URL).patch('/times/' + times[0]._id)
           .set('Accept', 'application/json')
           .set('Authorization', 'Bearer '.concat(token))
-          .send({ tag: { num: 4, color: 'bleu' } })
+          .send({ tag: { num: 4, itr: 'bleu' } })
           //when finished
           .end((err, res) => {
             if (err)
@@ -254,11 +254,11 @@ describe('times service', () => {
 
       describe('on hook checkTime', () => {
 
-        const invalidTime1 = { checkpoint_id: 1, tag: { num: 1, color: 'bleu' } };
-        const invalidTime2 = { tag: { num: 1, color: 'bleu' }, timestamp: new Date() };
-        const timeWithUnknownTag = { checkpoint_id: 1, tag: { num: 250, color: 'bleu' }, timestamp: new Date() };
-        const timeWithTagNotAssigned = { checkpoint_id: 1, tag: { num: 4, color: 'bleu' }, timestamp: new Date() };
-        const correctTime = { checkpoint_id: 1, tag: { num: 1, color: 'bleu' }, timestamp: new Date() };
+        const invalidTime1 = { checkpoint_id: 1, tag: { num: 1, itr: 'bleu' } };
+        const invalidTime2 = { tag: { num: 1, itr: 'bleu' }, timestamp: new Date() };
+        const timeWithUnknownTag = { checkpoint_id: 1, tag: { num: 250, itr: 'bleu' }, timestamp: new Date() };
+        const timeWithTagNotAssigned = { checkpoint_id: 1, tag: { num: 4, itr: 'bleu' }, timestamp: new Date() };
+        const correctTime = { checkpoint_id: 1, tag: { num: 1, itr: 'bleu' }, timestamp: new Date() };
 
         it('should not create the time (invalid time - no timestamp)', (done) => {
           chai.request(URL).post('/times')
@@ -345,17 +345,17 @@ describe('times service', () => {
 
         const waveNoStartTime = { num: 1, type: 'compet', date: '15-04-2017' };
         const correctWave = { num: 1, type: 'compet', date: '15-04-2017', start_time: new Date() };
-        const correctTime = { checkpoint_id: 99, tag: { num: 1, color: 'bleu' }, timestamp: new Date() };
-        const correctTimeUpdate = { checkpoint_id: 1, tag: { num: 1, color: 'bleu' }, timestamp: new Date() };
+        const correctTime = { checkpoint_id: 99, tag: { num: 1, itr: 'bleu' }, timestamp: new Date() };
+        const correctTimeUpdate = { checkpoint_id: 1, tag: { num: 1, itr: 'bleu' }, timestamp: new Date() };
         const incorrectRunner = {
           name: 'Runner1', team_id: 999, team_name: 'Team 1',
           type: 'compet', wave_id: 1, date: '15-04-2017', gender: 'm',
         };
         const correctRunner = {
-          name: 'Runner1', team_id: 999, team_name: 'Team 1', tag: { num: 1, color: 'bleu' },
+          name: 'Runner1', team_id: 999, team_name: 'Team 1', tag: { num: 1, itr: 'bleu' },
           type: 'compet', wave_id: 1, date: '15-04-2017', gender: 'm',
         };
-        const correctTagsRange = { from: 1, to: 10, color: 'bleu' };
+        const correctTagsRange = { from: 1, to: 10, itr: 'bleu' };
 
         beforeEach(function (done) {
           Results.remove(null).then(() => {

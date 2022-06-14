@@ -24,13 +24,13 @@ module.exports = function () {
 
   class CustomServiceForTags extends Service {
     create(data, params) {
-      if (data && data.from && data.color) {
+      if (data && data.from && data.itr) {
         if (data.to && data.to > 0 && data.to > data.from) {
           var tagsArray = [];
           for (var i = data.from; i <= data.to; i++) {
-            tagsArray.push({ num: i, color: data.color });
+            tagsArray.push({ num: i, itr: data.itr });
           }
-          race.update(null, { $addToSet: { tagsColor: data.color } }).exec();
+          race.update(null, { $addToSet: { tagsColor: data.itr } }).exec();
           return tag.create(tagsArray).then((data) => {
             data.forEach((tag) => {
               this.emit('created', tag);
@@ -38,7 +38,7 @@ module.exports = function () {
             return data;
           });
         } else {
-          return tag.create({ num: data.from, color: data.color }).then((tag) => {
+          return tag.create({ num: data.from, itr: data.itr }).then((tag) => {
             this.emit('created', tag);
             return tag;
           });

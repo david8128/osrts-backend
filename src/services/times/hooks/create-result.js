@@ -5,9 +5,9 @@
 
 const Q = require('q');
 var moment = require('moment');
-var momentfr = require('moment/locale/fr');
+require('moment/locale/es');
 var errors = require('@feathersjs/errors');
-moment.locale('fr');
+moment.locale('es');
 const FORMAT_TIMESTAMP = 'HH:mm:ss.SSSZZ';
 
 // Hook that creates the result if the checkpoint_id is the finish line (=99)
@@ -24,14 +24,14 @@ const createResult = context => {
     var runner;
     var wave;
     var times = [];
-    resultsService.find({ query: { 'tag.num': timeAtCheckpoint.tag.num, 'tag.color': timeAtCheckpoint.tag.color } }).then(data => {
+    resultsService.find({ query: { 'tag.num': timeAtCheckpoint.tag.num, 'tag.itr': timeAtCheckpoint.tag.itr } }).then(data => {
       // If there is no result already
       if (data.total === 0) {
         if (timeAtCheckpoint.checkpoint_id === 99) {
           var promisesArray = [];
           var deferredWaves = Q.defer(); // A defer because we need the promise to be already in the array
           // We search for the runner that has that tag
-          var promiseRunner = runnersService.find({ query: { 'tag.num': timeAtCheckpoint.tag.num, 'tag.color': timeAtCheckpoint.tag.color } });
+          var promiseRunner = runnersService.find({ query: { 'tag.num': timeAtCheckpoint.tag.num, 'tag.itr': timeAtCheckpoint.tag.itr } });
           promisesArray.push(promiseRunner);
           promiseRunner.then((dataRunner) => {
             if (dataRunner.total !== 1) {
@@ -50,7 +50,7 @@ const createResult = context => {
             });
           });
           // We retrieve all the times associated to that runner in order to produce the result
-          var promiseTimes = timesServices.find({ query: { 'tag.num': timeAtCheckpoint.tag.num, 'tag.color': timeAtCheckpoint.tag.color, $sort: { checkpoint_id: 1 } } });
+          var promiseTimes = timesServices.find({ query: { 'tag.num': timeAtCheckpoint.tag.num, 'tag.itr': timeAtCheckpoint.tag.itr, $sort: { checkpoint_id: 1 } } });
           promisesArray.push(promiseTimes);
           promiseTimes.then(dataTimes => {
             times = dataTimes.data;
@@ -61,7 +61,7 @@ const createResult = context => {
           // When all data has been retrieved
           Q.allSettled(promisesArray).then(results => {
             var newResult = {
-              name: runner.name, tag: { num: runner.tag.num, color: runner.tag.color }, team_name: runner.team_name,
+              name: runner.name, tag: { num: runner.tag.num, itr: runner.tag.itr }, team_name: runner.team_name,
               gender: runner.gender, date: runner.date, start_time: wave.start_time, times: {}, checkpoints_ids: []
             };
             // We compute the time taken
@@ -70,8 +70,12 @@ const createResult = context => {
               //console.log('Start ', wave.start_time, '    and    ', momentWaveStartTime.format(FORMAT_TIMESTAMP));
               var momentTimeAtCheckpoint = moment(time.timestamp, FORMAT_TIMESTAMP);
               //console.log('Timestamp ', timeAtCheckpoint.timestamp, '    and    ', momentTimeAtCheckpoint.format(FORMAT_TIMESTAMP));
+              console.log('Start ', momentWaveStartTime, '    and    ', momentTimeAtCheckpoint);
               var durationMoment = moment(momentTimeAtCheckpoint.diff(momentWaveStartTime));
-              newResult.times[time.checkpoint_id] = { time: durationMoment.toDate() };
+              var durationMomentHours = moment.duration(momentTimeAtCheckpoint.diff(momentWaveStartTime.subtract(1, "days"))).asHours();
+              console.log("durationMoment",durationMoment);
+              console.log("durationMoment",durationMomentHours);
+              newResult.times[time.checkpoint_id] = { time: durationMoment.toDate() ,duration: durationMomentHours };
               newResult.checkpoints_ids.push(time.checkpoint_id);
             });
             resultsService.create(newResult).then((data) => {

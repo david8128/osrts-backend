@@ -5,8 +5,8 @@
 
 const Q = require('q');
 var moment = require('moment');
-var momentfr = require('moment/locale/fr');
-moment.locale('fr');
+require('moment/locale/es');
+moment.locale('es');
 var errors = require('@feathersjs/errors');
 
 // Hooks that check that the time uploaded is valid
@@ -27,8 +27,8 @@ const checkTime = context => {
       reject(new Error('No checkpoint !'));
       return;
     }
-    var timePromise = timesService.find({query: {checkpoint_id: newTime.checkpoint_id, 'tag.num': newTime.tag.num, 'tag.color': newTime.tag.color}});
-    var tagPromise = tagsService.find({query: {num: newTime.tag.num, color: newTime.tag.color}});
+    var timePromise = timesService.find({query: {checkpoint_id: newTime.checkpoint_id, 'tag.num': newTime.tag.num, 'tag.itr': newTime.tag.itr}});
+    var tagPromise = tagsService.find({query: {num: newTime.tag.num, itr: newTime.tag.itr}});
     Q.allSettled([timePromise, tagPromise]).then(results=>{
       if(results[0].value.total !== 0){
         reject(new errors.Conflict('This tag has already a time at that checkpoint.'));

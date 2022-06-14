@@ -236,13 +236,13 @@ describe('results service', () => {
         const Times = app.service('times');
 
         const correctWave = { num: 1, type: "compet", date: "15-04-2017", start_time: new Date("2017-04-15T13:15:00+00:00") };
-        const correctTime1 = { checkpoint_id: 99, tag: { num: 1, color: "bleu" }, timestamp: new Date("2017-04-15T14:15:00+00:00") };
+        const correctTime1 = { checkpoint_id: 99, tag: { num: 1, itr: "bleu" }, timestamp: new Date("2017-04-15T14:15:00+00:00") };
         const correctRunner1 = {
-          name: "Runner1", team_id: 999, team_name: "Team 1", tag: { num: 1, color: "bleu" },
+          name: "Runner1", team_id: 999, team_name: "Team 1", tag: { num: 1, itr: "bleu" },
           type: "compet", wave_id: 1, date: "15-04-2017", gender: "M"
         };
 
-        const correctTagsRange = { from: 1, to: 10, color: "bleu" };
+        const correctTagsRange = { from: 1, to: 10, itr: "bleu" };
 
 
         var tags;
@@ -289,9 +289,9 @@ describe('results service', () => {
           });
         });
 
-        const correctTime2 = { checkpoint_id: 99, tag: { num: 2, color: "bleu" }, timestamp: new Date("2017-04-15T14:45:00+00:00") };
+        const correctTime2 = { checkpoint_id: 99, tag: { num: 2, itr: "bleu" }, timestamp: new Date("2017-04-15T14:45:00+00:00") };
         const correctRunner2 = {
-          name: "Runner2", team_id: 999, team_name: "Team 1", tag: { num: 2, color: "bleu" },
+          name: "Runner2", team_id: 999, team_name: "Team 1", tag: { num: 2, itr: "bleu" },
           type: "compet", wave_id: 1, date: "15-04-2017", gender: "M"
         };
 
@@ -301,7 +301,7 @@ describe('results service', () => {
           }).then(() => {
             return Times.create(correctTime2);
           }).then((res) => {
-            return Results.find({ query: { "tag.num": correctRunner2.tag.num, "tag.color": correctRunner2.tag.color } });
+            return Results.find({ query: { "tag.num": correctRunner2.tag.num, "tag.itr": correctRunner2.tag.itr } });
           }).then((data) => {
             expect(data.data).to.exist;
             expect(data.data).to.be.lengthOf(1);
@@ -318,9 +318,9 @@ describe('results service', () => {
           });
         });
 
-        const correctTime3 = { checkpoint_id: 99, tag: { num: 3, color: "bleu" }, timestamp: new Date("2017-04-15T14:30:00+00:00") };
+        const correctTime3 = { checkpoint_id: 99, tag: { num: 3, itr: "bleu" }, timestamp: new Date("2017-04-15T14:30:00+00:00") };
         const correctRunner3 = {
-          name: "Runner3", team_id: 999, team_name: "Team 1", tag: { num: 3, color: "bleu" },
+          name: "Runner3", team_id: 999, team_name: "Team 1", tag: { num: 3, itr: "bleu" },
           type: "compet", wave_id: 1, date: "15-04-2017", gender: "M"
         };
 
@@ -330,7 +330,7 @@ describe('results service', () => {
           }).then(() => {
             return Times.create(correctTime3);
           }).then(res => {
-            return Results.find({ query: { "tag.num": correctRunner3.tag.num, "tag.color": correctRunner3.tag.color } });
+            return Results.find({ query: { "tag.num": correctRunner3.tag.num, "tag.itr": correctRunner3.tag.itr } });
           }).then(data => {
             expect(data.data).to.exist;
             expect(data.data).to.be.lengthOf(1);
@@ -338,7 +338,7 @@ describe('results service', () => {
             expect(data.data[0].times).to.have.property(99);
             expect(data.data[0].times['99'].time).to.be.instanceof(Date);
             expect(data.data[0].number).to.equal(2);
-            return Results.find({ query: { "tag.num": correctRunner2.tag.num, "tag.color": correctRunner2.tag.color } });
+            return Results.find({ query: { "tag.num": correctRunner2.tag.num, "tag.itr": correctRunner2.tag.itr } });
           }).then(data => {
             expect(data.data).to.exist;
             expect(data.data).to.be.lengthOf(1);

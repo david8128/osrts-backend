@@ -16,10 +16,10 @@ const checkAndUpdateTagHook = context => {
       // Retrieve the old runner
       runnersService.get(context.id).then((oldRunner)=>{
         // If same tag_id, nothing to do
-        if(oldRunner.tag && oldRunner.tag.num === newRunner.tag.num && oldRunner.tag.color === newRunner.tag.color){
+        if(oldRunner.tag && oldRunner.tag.num === newRunner.tag.num && oldRunner.tag.itr === newRunner.tag.itr){
           resolve(context);
         } else {
-          tagsService.find({query: {num: newRunner.tag.num, color: newRunner.tag.color}}).then(tag=>{
+          tagsService.find({query: {num: newRunner.tag.num, itr: newRunner.tag.itr}}).then(tag=>{
             if(tag.total !== 1){
               reject(new Error('Ce tag n\'existe pas !'));
             } else if( tag.data[0].assigned === true){
@@ -27,8 +27,8 @@ const checkAndUpdateTagHook = context => {
             } else {
               if (oldRunner.tag && oldRunner.tag.num){
                 // Otherwise update the two tags
-                var promiseOldTag = tagsService.patch(null, {assigned: false}, {query: {num: oldRunner.tag.num, color: oldRunner.tag.color}});
-                var promiseNewTag = tagsService.patch(null, {assigned: true}, {query: {num: newRunner.tag.num, color: newRunner.tag.color}});
+                var promiseOldTag = tagsService.patch(null, {assigned: false}, {query: {num: oldRunner.tag.num, itr: oldRunner.tag.itr}});
+                var promiseNewTag = tagsService.patch(null, {assigned: true}, {query: {num: newRunner.tag.num, itr: newRunner.tag.itr}});
                 Q.allSettled([promiseOldTag, promiseNewTag]).then((results)=>{
                   results.forEach(tag=>{
                     if(tag.value.length === 0){
@@ -41,7 +41,7 @@ const checkAndUpdateTagHook = context => {
                   reject(new Error(error));
                 });
               } else {
-                tagsService.patch(null, {assigned: true}, {query: {num: newRunner.tag.num, color: newRunner.tag.color}});
+                tagsService.patch(null, {assigned: true}, {query: {num: newRunner.tag.num, itr: newRunner.tag.itr}});
                 resolve(context);
               }
             }

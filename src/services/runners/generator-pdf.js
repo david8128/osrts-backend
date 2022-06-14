@@ -11,8 +11,8 @@ var ejs = require('ejs');
 var phantom = require('phantom');
 const path = require('path');
 const moment = require('moment');
-require('moment/locale/fr');
-moment.locale('fr');
+require('moment/locale/es');
+moment.locale('es');
 
 const PRO_WAVE_NAME = 'compet';
 
